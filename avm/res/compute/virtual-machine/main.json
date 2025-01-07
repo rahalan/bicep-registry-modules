@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.32.4.45862",
-      "templateHash": "18035592397318794838"
+      "templateHash": "11401171621410330873"
     },
     "name": "Virtual Machines",
     "description": "This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.",
@@ -3058,7 +3058,8 @@
         }
       },
       "dependsOn": [
-        "vm"
+        "vm",
+        "vm_domainJoinExtension"
       ]
     },
     "vm_domainJoinExtension": {
@@ -3270,8 +3271,7 @@
         }
       },
       "dependsOn": [
-        "vm",
-        "vm_aadJoinExtension"
+        "vm"
       ]
     },
     "vm_microsoftAntiMalwareExtension": {
