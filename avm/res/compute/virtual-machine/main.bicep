@@ -708,6 +708,9 @@ module vm_aadJoinExtension 'extension/main.bicep' = if (extensionAadJoinConfig.e
     supressFailures: extensionAadJoinConfig.?supressFailures ?? false
     tags: extensionAadJoinConfig.?tags ?? tags
   }
+  dependsOn: [
+    vm_domainJoinExtension
+  ]
 }
 
 module vm_domainJoinExtension 'extension/main.bicep' = if (contains(extensionDomainJoinConfig, 'enabled') && extensionDomainJoinConfig.enabled) {
@@ -728,9 +731,6 @@ module vm_domainJoinExtension 'extension/main.bicep' = if (contains(extensionDom
       Password: extensionDomainJoinPassword
     }
   }
-  dependsOn: [
-    vm_aadJoinExtension
-  ]
 }
 
 module vm_microsoftAntiMalwareExtension 'extension/main.bicep' = if (extensionAntiMalwareConfig.enabled) {
