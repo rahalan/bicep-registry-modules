@@ -208,8 +208,8 @@ runs:
     - name: "Set variable"
       shell: pwsh
       run: |
-        $PESTER_NAME = ${{ inputs.templateFilePath}}
-        echo "PESTER_NAME=${$PESTER_NAME//\//-}" >> $GITHUB_ENV
+        $PesterTestName = ${{ inputs.templateFilePath}} -replace '/', '-'
+        echo "PESTER_NAME=$PesterTestName" >> $GITHUB_ENV
 
     - name: Test
       shell: pwsh
