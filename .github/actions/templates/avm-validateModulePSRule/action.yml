@@ -206,17 +206,15 @@ runs:
         Write-Output '::endgroup::'
 
     - name: "Set variable"
-      shell: bash
+      shell: pwsh
       run: |
-        PESTER_NAME = ${{ inputs.templateFilePath}}
-        PESTER_NAME = "${PESTER_NAME//\//-}"
-        echo $PESTER_NAME
-        echo "PESTER_NAME=$PESTER_NAME" >> $GITHUB_ENV
+        $PesterName = '${{ inputs.templateFilePath}}'' -replace '/', '-'
+        Write-Output ('{0}={1}' -f 'PESTER_NAME', $PesterName) >> $env:GITHUB_OUTPUT
 
     - name: Test
-      shell: bash
+      shell: pwsh
       run: |
-        echo $PESTER_NAME
+        echo "${{ env.PESTER_NAME }}"
 
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
