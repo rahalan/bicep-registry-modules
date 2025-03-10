@@ -210,3 +210,4 @@ runs:
       with:
         name: pester-results
         path: "${{ inputs.templateFilePath}}-PSRule-output.csv"
+        overwrite: true
