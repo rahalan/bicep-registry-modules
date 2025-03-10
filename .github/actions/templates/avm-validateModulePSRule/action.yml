@@ -205,7 +205,8 @@ runs:
 
         Write-Output '::endgroup::'
 
-    - name: "SetVariable"
+    - name: "Set variable"
+      id: SetVariable
       shell: pwsh
       run: |
         $PesterName = '${{ inputs.templateFilePath}}' -replace '/', '-'
