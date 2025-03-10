@@ -207,11 +207,14 @@ runs:
 
     - name: "Set variable"
       shell: pwsh
-      run: echo "PESTER_NAME=${${{ inputs.templateFilePath}}//\//-}" >> $GITHUB_ENV
+      run: |
+        $PESTER_NAME = ${{ inputs.templateFilePath}}
+        echo "PESTER_NAME=${$PESTER_NAME//\//-}" >> $GITHUB_ENV
 
     - name: Test
       shell: pwsh
-      run: echo $PESTER_NAME
+      run: |
+        echo $PESTER_NAME
 
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
