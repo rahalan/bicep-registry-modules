@@ -81,12 +81,6 @@ jobs:
             Write-Output ('{0}={1}' -f 'formattedPesterResultsPath', $outputsFilePath) >> $env:GITHUB_OUTPUT
           azPSVersion: "latest"
 
-      - name: "Upload pester test result as artifact"
-        uses: actions/upload-artifact@v4
-        with:
-          name: pester-results
-          path: "${{ steps.pester_run_step.outputs.formattedPesterResultsPath }}"
-
       - name: "Output to GitHub job summaries"
         if: always()
         shell: pwsh

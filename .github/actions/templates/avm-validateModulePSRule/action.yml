@@ -204,3 +204,9 @@ runs:
         }
 
         Write-Output '::endgroup::'
+
+    - name: "Upload pester test result as artifact"
+      uses: actions/upload-artifact@v4
+      with:
+        name: pester-results
+        path: "${{ steps.pester_run_step.outputs.formattedPesterResultsPath }}"
