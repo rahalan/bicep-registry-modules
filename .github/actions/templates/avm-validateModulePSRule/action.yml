@@ -208,6 +208,6 @@ runs:
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
       with:
-        name: "${{ inputs.templateFilePath}}"
+        name: "${{ inputs.templateFilePath}}//\//-"
         path: "${{ inputs.templateFilePath}}-PSRule-output.csv"
         # overwrite: true
