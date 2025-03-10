@@ -215,6 +215,7 @@ runs:
       shell: pwsh
       run: |
         echo "${{ env.PESTER_NAME}}"
+        echo $PesterName
 
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
