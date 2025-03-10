@@ -205,9 +205,13 @@ runs:
 
         Write-Output '::endgroup::'
 
+    - name: "Set variable"
+      shell: pwsh
+      run: echo "PESTER_NAME=${${{ inputs.templateFilePath}}//\//-}" >> $GITHUB_ENV
+
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
       with:
-        name: "${${{ inputs.templateFilePath}}//\//-}"
+        name: echo $PESTER_NAME
         path: "${{ inputs.templateFilePath}}-PSRule-output.csv"
         # overwrite: true
