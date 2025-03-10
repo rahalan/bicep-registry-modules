@@ -209,16 +209,16 @@ runs:
       shell: pwsh
       run: |
         $PesterName = '${{ inputs.templateFilePath}}' -replace '/', '-'
-        Write-Output ('{0}={1}' -f 'PESTER_NAME', $PesterName) >> $env:GITHUB_OUTPUT
+        Write-Output ('{0}={1}' -f 'PESTER_NAME', $PesterName) >> $env:$GITHUB_ENV
 
     - name: Test
       shell: pwsh
       run: |
-        echo "${{ env.PESTER_NAME }}"
+        echo "${{ env.PESTER_NAME}}"
 
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
       with:
-        name: $PESTER_NAME
+        name: "${{ env.PESTER_NAME}}"
         path: "${{ inputs.templateFilePath}}-PSRule-output.csv"
         # overwrite: true
