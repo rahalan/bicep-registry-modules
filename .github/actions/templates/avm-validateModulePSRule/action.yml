@@ -212,6 +212,6 @@ runs:
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
       with:
-        name: echo $PESTER_NAME
+        name: $PESTER_NAME
         path: "${{ inputs.templateFilePath}}-PSRule-output.csv"
         # overwrite: true
