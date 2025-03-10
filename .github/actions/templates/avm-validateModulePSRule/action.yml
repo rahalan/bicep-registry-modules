@@ -215,11 +215,11 @@ runs:
     - name: Test
       shell: pwsh
       run: |
-        echo "${{ SetVariable.outputs.PESTER_NAME}}"
+        echo "${{ steps.SetVariable.outputs.PESTER_NAME}}"
 
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
       with:
-        name: "${{ SetVariable.outputs.PESTER_NAME}}"
+        name: "${{ steps.SetVariable.outputs.PESTER_NAME}}"
         path: "${{ inputs.templateFilePath}}-PSRule-output.csv"
         # overwrite: true
