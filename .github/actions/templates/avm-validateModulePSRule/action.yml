@@ -211,7 +211,7 @@ runs:
       run: |
         $PesterName = '${{ inputs.templateFilePath}}' -replace '/', '-'
         Write-Output ('{0}={1}' -f 'PESTER_NAME', $PesterName) >> $GITHUB_OUTPUT
-        Write-Output "${{ steps.SetVariable.outputs.*[0}]}}"
+        Write-Output "${{ steps.SetVariable.outputs.*[0]}}"
 
     - name: Test
       shell: pwsh
