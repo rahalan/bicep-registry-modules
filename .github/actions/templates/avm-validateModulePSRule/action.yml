@@ -210,7 +210,7 @@ runs:
       shell: pwsh
       run: |
         $PesterName = '${{ inputs.templateFilePath }}' -replace '/', '-'
-        Write-Output ('{0}={1}' -f 'pestername', $PesterName) >>  $env:$GITHUB_OUTPUT
+        Write-Output ('{0}={1}' -f 'pestername', $PesterName) >> $env:GITHUB_OUTPUT
 
     - name: Test
       shell: pwsh
