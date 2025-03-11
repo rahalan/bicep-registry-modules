@@ -211,11 +211,12 @@ runs:
       run: |
         $PesterName = '${{ inputs.templateFilePath}}' -replace '/', '-'
         Write-Output ('{0}={1}' -f 'PESTER_NAME', $PesterName) >> $GITHUB_OUTPUT
+        Write-Output ('{0}={1}' -f 'PESTER_NAME', $PesterName)
 
     - name: Test
       shell: pwsh
       run: |
-        echo "${{ steps.SetVariable.outputs.PESTER_NAME}}"
+        Write-Output "${{ steps.SetVariable.outputs.PESTER_NAME}}"
 
     - name: "Upload pester test result as artifact"
       uses: actions/upload-artifact@v4
