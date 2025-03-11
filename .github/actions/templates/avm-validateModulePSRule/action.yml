@@ -31,6 +31,10 @@ inputs:
     description: "The PSRule baseline to be used"
     required: true
     default: "Azure.Default"
+outputs:
+  out:
+    description: "Pester test name"
+    value: ${{ steps.SetVariable.outputs.PESTER_NAME }}
 
 runs:
   using: "composite"
@@ -211,8 +215,6 @@ runs:
       run: |
         $PesterName = '${{ inputs.templateFilePath}}' -replace '/', '-'
         Write-Output ('{0}={1}' -f 'PESTER_NAME', $PesterName) >> $GITHUB_OUTPUT
-        Write-Output Get-Childitem $env
-        Write-Output "${{ steps.SetVariable.outputs.*.length}}"
 
     - name: Test
       shell: pwsh
