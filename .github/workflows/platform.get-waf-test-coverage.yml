@@ -20,6 +20,7 @@ jobs:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
         with:
+          name: "CB.AVM.WAF.Security-avm-res-compute-virtual-machine-tests-e2e-waf-aligned-main.test.bicep"
           run-id: 13788606107
       - name: Display structure of downloaded files
         run: |
