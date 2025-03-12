@@ -24,9 +24,8 @@ jobs:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v4
         with:
-          name: waf-test-coverage
-          github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
-          repository: rahalan/bicep-registry-modules
+          # github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+          # repository: rahalan/bicep-registry-modules
           run-id: 13788606107
       - name: Display structure of downloaded files
         run: ls -R
