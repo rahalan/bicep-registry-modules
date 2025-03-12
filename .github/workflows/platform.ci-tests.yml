@@ -21,6 +21,7 @@ on:
 env:
   workflowPath: ".github/workflows/platform.ci-tests.yml"
 
+
 jobs:
   ###########################
   #   Initialize pipeline   #
