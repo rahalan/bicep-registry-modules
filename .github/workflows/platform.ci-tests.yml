@@ -7,7 +7,7 @@ on:
         type: string
         description: "The regex of the test file(s) to run"
         required: false
-        default: ".*"
+        default: '.*'
   push:
     branches:
       - main
