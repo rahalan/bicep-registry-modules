@@ -21,6 +21,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: "CB.AVM.WAF.Security-avm-res-compute-virtual-machine-tests-e2e-waf-aligned-main.test.bicep"
+          github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
           run-id: 13788606107
       - name: Display structure of downloaded files
         run: |
