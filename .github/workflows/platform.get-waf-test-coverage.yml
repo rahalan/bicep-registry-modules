@@ -17,11 +17,18 @@ jobs:
       #   with:
       #     app_id: ${{ secrets.TEAM_LINTER_APP_ID }}
       #     private_key: ${{ secrets.TEAM_LINTER_PRIVATE_KEY }}
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
-          run-id: 13948295427
+      - name: sync avm modules list
+        shell: pwsh
+        env:
+          # GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+        run: |
+          gh run download 13948295427 -p 'CB.AVM.WAF*'
       - name: Display structure of downloaded files
         run: |
-          ls -R
+          $dir = Get-ChildItem -Filter 'CB.AVM.WAF*'
+          $dir | ForEach-Object {
+            $csv = Get-ChildItem -Path $_.FullName
+            $tests = Import-Csv -Path $csv.FullName
+            $tests | Format-Table
+          }
