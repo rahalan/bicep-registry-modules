@@ -23,6 +23,8 @@ jobs:
           # GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
         run: |
+          $repo = "rahalan/bicep-registry-modules"
+          gh repo set-default $repo
           gh run download 13948295427 -p 'CB.AVM.WAF*'
       - name: Display structure of downloaded files
         run: |
