@@ -28,8 +28,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
         run: |
           $repo = "rahalan/bicep-registry-modules"
+          $LimitNumberOfRuns = 100
           gh repo set-default $repo
-          gh run download 13948295427 -p 'CB.AVM.WAF*'
+          $runs = gh run list --json 'databaseId' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
+          $runs | ForEach-Object { gh run download $_.databaseId -p 'CB.AVM.WAF*' }
       - name: Display structure of downloaded files
         shell: pwsh
         run: |
