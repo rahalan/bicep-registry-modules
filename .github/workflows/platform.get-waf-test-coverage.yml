@@ -1,0 +1,27 @@
+# Workflow for evaluting how many modules are covered by WAF tests compared to the baseline
+name: .Platform - Get WAF test coverage
+
+on:
+  schedule:
+    - cron: "30 4 * * *" # Every day at 4:30 am
+  workflow_dispatch:
+
+jobs:
+  manage-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      # - uses: tibdex/github-app-token@v2
+      #   id: generate-token
+      #   with:
+      #     app_id: ${{ secrets.TEAM_LINTER_APP_ID }}
+      #     private_key: ${{ secrets.TEAM_LINTER_PRIVATE_KEY }}
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+          run-id: 13788606107
+      - name: Display structure of downloaded files
+        run: |
+          ls -R
