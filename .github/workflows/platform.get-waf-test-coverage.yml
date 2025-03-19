@@ -37,5 +37,6 @@ jobs:
           $dir | ForEach-Object {
             $csv = Get-ChildItem -Path $_.FullName
             $tests = Import-Csv -Path $csv.FullName
+            Write-Host $_.Name
             $tests | Format-Table
           }
