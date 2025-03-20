@@ -26,31 +26,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          $repo = "rahalan/bicep-registry-modules"
-          $LimitNumberOfRuns = 100
-          $runs = gh run list --json 'number,name,databaseId,headBranch' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
-          $uniqueRuns =@()
-          # $runs | Where-Object { $_.headBranch -eq 'main' -and $_.name.StartsWith('avm.') } | Sort-Object -Property name, number -Descending | ForEach-Object {
-          $runs | Where-Object { $_.headBranch -ne 'main' -and $_.name.StartsWith('avm.') } | Sort-Object -Property name, number -Descending | ForEach-Object {
-            if ($uniqueRuns -notcontains $_.name) {
-              $uniqueRuns += $_.name
-              Write-Host "Downloading artifacts for run: $($_.name) $($_.databaseId)"
-              gh run download $_.databaseId -p 'CB.AVM.WAF*' --repo $Repo
-            }
-          }
-      - name: Display structure of downloaded files
-        shell: pwsh
-        run: |
-          $dir = Get-ChildItem -Filter 'CB.AVM.WAF*'
-          $dir | ForEach-Object {
-            $csv = Get-ChildItem -Path $_.FullName
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'platform' 'Get-WafTestCoverage.ps1')
 
-            if ($csv -ne $null) {
-              $tests = Import-Csv -Path $csv.FullName
-
-              if ($tests.Count -gt 0) {
-                Write-Host $_.Name
-                $tests | Format-Table
-              }
-            }
+          $functionInput = @{
+            Repo     = "${{ github.repository_owner }}/${{ github.event.repository.name }}"
+            RepoRoot = $env:GITHUB_WORKSPACE
+            LimitNumberOfRuns = 500
+            LimitInDays       = 2
           }
+
+          Get-WafTestCoverage @functionInput -Verbose
