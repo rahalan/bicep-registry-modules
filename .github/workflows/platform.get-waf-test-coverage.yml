@@ -21,7 +21,7 @@ jobs:
       #   with:
       #     app_id: ${{ secrets.TEAM_LINTER_APP_ID }}
       #     private_key: ${{ secrets.TEAM_LINTER_PRIVATE_KEY }}
-      - name: sync avm modules list
+      - name: Grab artifacts from runs
         shell: pwsh
         env:
           # GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
@@ -45,13 +45,12 @@ jobs:
           $dir | ForEach-Object {
             $csv = Get-ChildItem -Path $_.FullName
 
-            if ($csv -eq $null) {
-              Write-Host "No files found in $($_.FullName)"
-              return
-            }
-            else {
+            if ($csv -ne $null) {
               $tests = Import-Csv -Path $csv.FullName
-              Write-Host $_.Name
-              $tests | Format-Table
+
+              if ($tests.Count -gt 0) {
+                Write-Host $_.Name
+                $tests | Format-Table
+              }
             }
           }
