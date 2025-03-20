@@ -29,9 +29,14 @@ jobs:
         run: |
           $repo = "rahalan/bicep-registry-modules"
           $LimitNumberOfRuns = 100
-          gh repo set-default $repo
-          $runs = gh run list --json 'databaseId' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
-          $runs | ForEach-Object { gh run download $_.databaseId -p 'CB.AVM.WAF*' }
+          $runs = gh run list --json 'number,name,databaseId' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
+          uniqueRuns =@()
+          $runs | ForEach-Object {
+            if ($uniqueRuns -notcontains $_.name) {
+              $uniqueRuns += $_.name
+              gh run download $_.databaseId -p 'CB.AVM.WAF*' --repo $Repo
+            }
+          }
       - name: Display structure of downloaded files
         shell: pwsh
         run: |
