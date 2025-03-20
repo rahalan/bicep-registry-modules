@@ -34,26 +34,32 @@ function Get-WafTestCoverage {
         [int] $LimitInDays = 2
     )
 
-    $runs = gh run list --json 'number,name,databaseId,headBranch' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
+    $runs = gh run list --json 'number,name,databaseId,headBranch,startedAt' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
     $uniqueRuns = @()
-    # $runs | Where-Object { $_.headBranch -eq 'main' -and $_.name.StartsWith('avm.') } | Sort-Object -Property name, number -Descending | ForEach-Object {
-    $runs | Where-Object { $_.headBranch -ne 'main' -and $_.name.StartsWith('avm.') } | Sort-Object -Property name, number -Descending | ForEach-Object {
-        if ($uniqueRuns -notcontains $_.name) {
-            $uniqueRuns += $_.name
-            Write-Host "Downloading artifacts for run: $($_.name) $($_.databaseId)"
-            gh run download $_.databaseId -p 'CB.AVM.WAF*' --repo $Repo
+
+    foreach ($run in $runs | Sort-Object -Property name, number -Descending) {
+        $runStartTime = [Datetime]::ParseExact($run.startedAt, 'MM/dd/yyyy HH:mm:ss', $null)
+
+        # ATTENTION: change to -eq main when creating the PR
+        if (($run.headBranch -ne 'main') -and ($runStartTime -gt (Get-Date).AddDays(-$LimitInDays)) -and ($run.name.StartsWith('avm.'))) {
+            if ($uniqueRuns -notcontains $run.name) {
+                $uniqueRuns += $run.name
+                Write-Host "Downloading artifacts for run: $($run.name) $($run.databaseId)"
+                gh run download $run.databaseId -p 'CB.AVM.WAF*' --repo $Repo
+            }
         }
     }
 
-    $dir = Get-ChildItem -Filter 'CB.AVM.WAF*'
-    $dir | ForEach-Object {
-        $csv = Get-ChildItem -Path $_.FullName
+    $directories = Get-ChildItem -Filter 'CB.AVM.WAF*'
+
+    foreach ($directory in $directories) {
+        $csv = Get-ChildItem -Path $directory.FullName
 
         if ($null -ne $csv) {
             $tests = Import-Csv -Path $csv.FullName
 
             if ($tests.Count -gt 0) {
-                Write-Host $_.Name
+                Write-Host $directory.Name
                 $tests | Format-Table
             }
         }

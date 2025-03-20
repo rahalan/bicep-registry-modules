@@ -21,7 +21,7 @@ jobs:
         with:
           app_id: ${{ secrets.TEAM_LINTER_APP_ID }}
           private_key: ${{ secrets.TEAM_LINTER_PRIVATE_KEY }}
-      - name: Grab artifacts from runs
+      - name: Get WAF test coverage
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
