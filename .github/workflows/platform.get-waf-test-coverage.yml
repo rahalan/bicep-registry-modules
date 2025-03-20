@@ -29,9 +29,10 @@ jobs:
         run: |
           $repo = "rahalan/bicep-registry-modules"
           $LimitNumberOfRuns = 100
-          $runs = gh run list --json 'number,name,databaseId' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
+          $runs = gh run list --json 'number,name,databaseId,headBranch' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
           $uniqueRuns =@()
-          $runs | Sort-Object -Property name, number -Descending | ForEach-Object {
+          # $runs | Where-Object { $_.headBranch -eq 'main' -and $_.name.StartsWith('avm.') } | Sort-Object -Property name, number -Descending | ForEach-Object {
+          $runs | Where-Object { $_.headBranch -ne 'main' -and $_.name.StartsWith('avm.') } | Sort-Object -Property name, number -Descending | ForEach-Object {
             if ($uniqueRuns -notcontains $_.name) {
               $uniqueRuns += $_.name
               gh run download $_.databaseId -p 'CB.AVM.WAF*' --repo $Repo
