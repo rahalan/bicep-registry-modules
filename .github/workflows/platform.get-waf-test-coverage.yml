@@ -24,8 +24,8 @@ jobs:
       - name: Grab artifacts from runs
         shell: pwsh
         env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
-          # GITHUB_TOKEN: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+          # GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
         run: |
           $repo = "rahalan/bicep-registry-modules"
           $LimitNumberOfRuns = 100
