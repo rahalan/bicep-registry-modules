@@ -24,8 +24,7 @@ jobs:
       - name: Grab artifacts from runs
         shell: pwsh
         env:
-          # GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }} # token with actions:read permissions on target repo
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           $repo = "rahalan/bicep-registry-modules"
           $LimitNumberOfRuns = 100
@@ -35,6 +34,7 @@ jobs:
           $runs | Where-Object { $_.headBranch -ne 'main' -and $_.name.StartsWith('avm.') } | Sort-Object -Property name, number -Descending | ForEach-Object {
             if ($uniqueRuns -notcontains $_.name) {
               $uniqueRuns += $_.name
+              Write-Host "Downloading artifacts for run: $($_.name) $($_.databaseId)"
               gh run download $_.databaseId -p 'CB.AVM.WAF*' --repo $Repo
             }
           }
