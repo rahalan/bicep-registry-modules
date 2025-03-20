@@ -44,7 +44,14 @@ jobs:
           $dir = Get-ChildItem -Filter 'CB.AVM.WAF*'
           $dir | ForEach-Object {
             $csv = Get-ChildItem -Path $_.FullName
-            $tests = Import-Csv -Path $csv.FullName
-            Write-Host $_.Name
-            $tests | Format-Table
+
+            if ($csv -eq $null) {
+              Write-Host "No files found in $($_.FullName)"
+              return
+            }
+            else {
+              $tests = Import-Csv -Path $csv.FullName
+              Write-Host $_.Name
+              $tests | Format-Table
+            }
           }
