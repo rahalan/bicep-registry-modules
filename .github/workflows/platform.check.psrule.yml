@@ -209,4 +209,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: "${{ steps.setvariable.outputs.pestername }}"
-          path: "${{ inputs.templateFilePath }}-PSRule-output.csv"
+          path: "${{ env.PSRuleOutputFilePath }}"
