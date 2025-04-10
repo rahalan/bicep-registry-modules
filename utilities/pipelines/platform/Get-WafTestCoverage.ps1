@@ -39,7 +39,6 @@ function Get-WafTestCoverage {
             $tests `
             | Where-Object { $_.TargetType -ne 'Microsoft.Resources/deployments' -and $_.TargetType -ne 'Microsoft.Resources/deploymentScripts' } `
             | Select-Object -Property 'TargetType', 'RuleName', 'Outcome' -Unique `
-            | Measure-Object
             | Format-Table
         }
     }
