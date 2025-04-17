@@ -29,7 +29,7 @@ function Get-WafTestCoverage {
 
     gh run download $runId --repo $Repo
 
-    $directory = Get-ChildItem -Filter 'avm-res-PSRule-output.csv' | Select-Object -Last 1
+    $directory = Get-ChildItem -Filter 'avm-PSRule-output.csv' | Select-Object -Last 1
     $csv = Get-ChildItem -Path $directory.FullName
 
     if ($null -ne $csv) {
